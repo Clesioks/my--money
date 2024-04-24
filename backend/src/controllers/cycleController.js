@@ -4,8 +4,29 @@ import Billing from '../API/billingCycle/billingCycle.js'
 const getPayments = asyncHandler (async (req, res) => {
 
     // res.send('Busca usuários')
-    const registros = await Billing.find({})
-    res.status(200).json(registros)
+   try {
+    
+       let query = {}
+       let page = req.query.page
+       let limit = 10
+       let skip = limit * (page - 1)
+       const registros = await Billing.find(query).skip(skip).limit(limit)
+        res.status(200).send(registros);
+
+   } catch (error) {
+        console.log(error);
+
+   }
+    // try {
+    //     // Adding Pagination
+    //     const limitValue = req.query.limit || 1;
+    //     const skipValue = req.query.skip || 0;
+    //     const posts = await Billing.find()
+    //     .limit(limitValue).skip(skipValue);
+    //     res.status(200).send(posts);
+    // } catch (e) {
+    //     console.log(e);
+    // }
 })
 
 const registerPayments = asyncHandler (async (req, res) => {
